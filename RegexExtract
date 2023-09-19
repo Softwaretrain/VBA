@@ -1,0 +1,28 @@
+' From StackOverflow: https://stackoverflow.com/questions/7086270/how-to-extract-text-within-a-string-of-text
+Function RegexExtract(ByVal text As String, _
+                      ByVal extract_what As String, _
+                      Optional separator As String = ", ") As String
+
+Dim allMatches As Object
+Dim RE As Object
+Set RE = CreateObject("vbscript.regexp")
+Dim i As Long, j As Long
+Dim result As String
+
+RE.Pattern = extract_what
+RE.Global = True
+Set allMatches = RE.Execute(text)
+
+For i = 0 To allMatches.Count - 1
+    For j = 0 To allMatches.Item(i).submatches.Count - 1
+        result = result & (separator & allMatches.Item(i).submatches.Item(j))
+    Next
+Next
+
+If Len(result) <> 0 Then
+    result = Right$(result, Len(result) - Len(separator))
+End If
+
+RegexExtract = result
+
+End Function
